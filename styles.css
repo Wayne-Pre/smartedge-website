@@ -151,4 +151,198 @@ footer{background:var(--navy); color:#c7cad3; padding:56px 0 28px; font-size:14.
 .lnode.n2 .dot{animation:activate 4s infinite; animation-delay:1s;}
 .lnode.n3 .dot{animation:activate 4s infinite; animation-delay:2s;}
 .lnode.n4 .dot{animation:activate 4s infinite; animation-delay:3s;}
+/* =====================================================================
+   SMARTEDGE HERO — "Leak → Fixed"
+   Background slowly morphs between two states:
+     LEAK  (ember orange / crimson)  →  FIXED (teal / emerald / lime)
+   That is your whole pitch, told through colour, before a word is read.
+   Paste at the BOTTOM of your styles file (it overrides the old hero).
+   ===================================================================== */
 
+/* ---- Animatable colour stops (Chrome, Safari 16.4+, Firefox 128+) ---- */
+@property --c1   { syntax:'<color>'; inherits:true; initial-value:#d9620b; }
+@property --c2   { syntax:'<color>'; inherits:true; initial-value:#b0221e; }
+@property --c3   { syntax:'<color>'; inherits:true; initial-value:#4a0d2a; }
+@property --glow { syntax:'<color>'; inherits:true; initial-value:rgba(255,190,90,.55); }
+
+/* ---- Hero shell ---- */
+.hero{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  background:var(--navy,#0b1020);
+  padding:clamp(84px,12vh,128px) 0 clamp(60px,9vh,96px);
+  animation:heroShift 18s ease-in-out infinite alternate;
+}
+
+/* Layer 1: flowing gradient + left-side scrim (keeps text readable) + glow behind the visual */
+.hero::before{
+  content:"";
+  position:absolute; inset:-15%;
+  z-index:-3; pointer-events:none;
+  background:
+    linear-gradient(90deg, rgba(7,10,20,.60) 0%, rgba(7,10,20,.28) 48%, rgba(7,10,20,0) 80%),
+    radial-gradient(42% 55% at 78% 50%, var(--glow,rgba(255,190,90,.55)), transparent 70%),
+    linear-gradient(125deg, var(--c1,#d9620b), var(--c2,#b0221e) 48%, var(--c3,#4a0d2a));
+  background-size:100% 100%, 100% 100%, 190% 190%;
+  animation:heroFlow 26s ease-in-out infinite alternate;
+}
+
+/* Layer 2: film grain — kills banding, adds that premium "printed" feel */
+.hero::after{
+  content:"";
+  position:absolute; inset:0;
+  z-index:-2; pointer-events:none;
+  opacity:.22;
+  mix-blend-mode:overlay;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes heroShift{
+  0%,15%  { --c1:#d9620b; --c2:#b0221e; --c3:#4a0d2a; --glow:rgba(255,190,90,.55); }   /* LEAK  */
+  85%,100%{ --c1:#0d4f4c; --c2:#3c9a45; --c3:#c8d81c; --glow:rgba(46,212,122,.60); }   /* FIXED */
+}
+@keyframes heroFlow{
+  0%  { background-position:0 0, 0 0, 0% 25%; }
+  100%{ background-position:0 0, 0 0, 100% 75%; }
+}
+
+/* ---- Giant serif watermark (change the word in one place) ---- */
+.hero .wrap{ position:relative; z-index:1; }
+.hero .wrap::before{
+  content:"Found";
+  position:absolute; right:-3%; top:50%;
+  transform:translateY(-52%);
+  z-index:-1; pointer-events:none; user-select:none; white-space:nowrap;
+  font:italic 700 clamp(150px,27vw,430px)/.8 Georgia,"Times New Roman",serif;
+  letter-spacing:-.045em;
+  color:rgba(255,255,255,.075);
+  animation:wmDrift 30s ease-in-out infinite alternate;
+}
+@keyframes wmDrift{
+  0%  { transform:translate(0,-52%) rotate(-4deg); }
+  100%{ transform:translate(-4%,-48%) rotate(-1deg); }
+}
+
+/* ---- Text colours ---- */
+.hero h1{ color:#fff; text-shadow:0 2px 30px rgba(0,0,0,.25); }
+.hero p.lead{ color:#eef1f6; }
+.hero .hero-note{ color:rgba(255,255,255,.75); }
+
+/* Optional: wrap a phrase in <span class="accent"> or <em> inside your h1 for a shimmering highlight */
+.hero h1 em, .hero h1 .accent{
+  font-style:normal;
+  background:linear-gradient(100deg,#fff 20%,#ffe9b0 40%,#fff 60%);
+  background-size:220% 100%;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  animation:shimmer 5s ease-in-out infinite;
+}
+@keyframes shimmer{ 0%{background-position:120% 0;} 100%{background-position:-120% 0;} }
+
+/* ---- Typewriter eyebrow (desktop only; mobile just fades in) ---- */
+.hero .eyebrow{
+  position:relative; display:inline-block;
+  color:#fff; font-weight:600; letter-spacing:.02em;
+  animation:heroRise .8s cubic-bezier(.2,.7,.2,1) both;
+}
+@media (min-width:900px){
+  .hero .eyebrow{
+    white-space:nowrap; padding-right:8px;
+    animation:typeReveal 3.4s steps(64,end) .3s both;
+  }
+  .hero .eyebrow::after{
+    content:""; position:absolute; top:10%; bottom:10%; width:2px; left:0;
+    background:var(--green,#2ed47a);
+    box-shadow:0 0 8px var(--green,#2ed47a);
+    animation:caretRun 3.4s steps(64,end) .3s both, caretBlink .85s step-end 3.7s infinite;
+  }
+}
+@keyframes typeReveal{ from{clip-path:inset(0 100% 0 0);} to{clip-path:inset(0 0 0 0);} }
+@keyframes caretRun  { from{left:0;} to{left:calc(100% - 2px);} }
+@keyframes caretBlink{ 50%{opacity:0;} }
+
+/* ---- Staggered entrance ---- */
+.hero h1          { animation:heroRise .9s cubic-bezier(.2,.7,.2,1) .35s both; }
+.hero p.lead      { animation:heroRise .9s cubic-bezier(.2,.7,.2,1) .55s both; }
+.hero .btn        { animation:heroRise .9s cubic-bezier(.2,.7,.2,1) .75s both, ctaPulse 2.8s ease-out 2s infinite; }
+.hero .hero-note  { animation:heroRise .9s cubic-bezier(.2,.7,.2,1) .95s both; }
+@keyframes heroRise{
+  from{ opacity:0; transform:translateY(24px); }
+  to  { opacity:1; transform:none; }
+}
+
+/* ---- CTA button ---- */
+.hero .btn{
+  position:relative; overflow:hidden;
+  background:var(--green,#2ed47a); color:var(--navy,#0b1020);
+  border:1.5px solid rgba(255,255,255,.9);
+  border-radius:999px; font-weight:700;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+}
+.hero .btn::before{               /* light sweep on hover */
+  content:""; position:absolute; top:0; bottom:0; left:-60%; width:40%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);
+  transform:skewX(-20deg); transition:left .6s ease;
+}
+.hero .btn:hover{ transform:translateY(-3px); box-shadow:0 14px 34px rgba(0,0,0,.35); }
+.hero .btn:hover::before{ left:130%; }
+@keyframes ctaPulse{
+  0%  { box-shadow:0 0 0 0 rgba(46,212,122,.55); }
+  70% { box-shadow:0 0 0 16px rgba(46,212,122,0); }
+  100%{ box-shadow:0 0 0 0 rgba(46,212,122,0); }
+}
+
+/* ---- Right-hand visual: floating glass card with a glow halo (like the hand in your video) ---- */
+.hero-visual{
+  position:relative;
+  background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.05));
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:20px;
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  backdrop-filter:blur(14px) saturate(140%);
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.25);
+  animation:heroRiseR 1s cubic-bezier(.2,.7,.2,1) .5s both, floaty 7s ease-in-out 1.6s infinite;
+}
+.hero-visual::before{             /* halo that changes colour with the background */
+  content:""; position:absolute; inset:-45px; z-index:-1; pointer-events:none;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--glow,rgba(255,190,90,.55)),transparent 65%);
+  filter:blur(28px);
+  animation:halo 5s ease-in-out infinite;
+}
+@keyframes heroRiseR{ from{opacity:0; transform:translateX(40px) scale(.96);} to{opacity:1; transform:none;} }
+@keyframes floaty   { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
+@keyframes halo     { 0%,100%{opacity:.55; transform:scale(.95);} 50%{opacity:1; transform:scale(1.08);} }
+
+.hero-visual-label,
+.hero-visual-note{ color:rgba(255,255,255,.78); }
+
+/* ---- Ladder (your existing rung-by-rung activation, upgraded with a ripple) ---- */
+.lnode span{ color:#eef1f6; }
+.lnode .dot{ background:#1b1d24; border:3px solid rgba(255,255,255,.35); }
+.ladder-track{ background:rgba(255,255,255,.22); }
+@keyframes activate{
+  0%  { border-color:rgba(255,255,255,.35); background:#1b1d24; box-shadow:0 0 0 0 rgba(46,212,122,0); transform:scale(1); }
+  5%  { transform:scale(1.22); border-color:var(--green,#2ed47a); background:var(--green,#2ed47a); box-shadow:0 0 18px rgba(46,212,122,.85), 0 0 0 0 rgba(46,212,122,.6); }
+  12% { box-shadow:0 0 10px rgba(46,212,122,.5), 0 0 0 14px rgba(46,212,122,0); }
+  15% { transform:scale(1); border-color:var(--green,#2ed47a); background:var(--green,#2ed47a); box-shadow:0 0 6px rgba(46,212,122,.4); }
+  27% { border-color:rgba(255,255,255,.35); background:#1b1d24; box-shadow:none; }
+  100%{ border-color:rgba(255,255,255,.35); background:#1b1d24; }
+}
+
+/* ---- Small screens: lighter effects ---- */
+@media (max-width:700px){
+  .hero .wrap::before{ font-size:56vw; right:-10%; opacity:.9; }
+  .hero-visual{ animation:heroRise .9s cubic-bezier(.2,.7,.2,1) .5s both; }   /* no float on phones */
+  .hero-visual::before{ inset:-25px; }
+}
+
+/* ---- Respect users who turn animations off ---- */
+@media (prefers-reduced-motion:reduce){
+  .hero, .hero::before, .hero .wrap::before, .hero h1, .hero p.lead, .hero .btn,
+  .hero .hero-note, .hero .eyebrow, .hero .eyebrow::after, .hero h1 em, .hero h1 .accent,
+  .hero-visual, .hero-visual::before{ animation:none !important; }
+  .hero .eyebrow{ clip-path:none; }
+  .hero .eyebrow::after{ display:none; }
+}
