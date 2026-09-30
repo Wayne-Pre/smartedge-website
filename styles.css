@@ -151,3 +151,57 @@ footer{background:var(--navy); color:#c7cad3; padding:56px 0 28px; font-size:14.
 .lnode.n2 .dot{animation:activate 4s infinite; animation-delay:1s;}
 .lnode.n3 .dot{animation:activate 4s infinite; animation-delay:2s;}
 .lnode.n4 .dot{animation:activate 4s infinite; animation-delay:3s;}
+cat << 'EOF'
+/* ---- Hero: animated gradient background ---- */
+.hero{position:relative; overflow:hidden; background:var(--navy); padding:96px 0 64px;}
+.hero::before, .hero::after{content:""; position:absolute; width:520px; height:520px; border-radius:50%; filter:blur(60px); pointer-events:none; z-index:0;}
+.hero::before{background:radial-gradient(circle, rgba(46,212,122,.35), transparent 70%); top:-200px; left:-140px; animation:driftA 16s ease-in-out infinite alternate;}
+.hero::after{background:radial-gradient(circle, rgba(46,212,122,.2), transparent 70%); bottom:-220px; right:-160px; animation:driftB 20s ease-in-out infinite alternate;}
+@keyframes driftA{0%{transform:translate(0,0);}100%{transform:translate(60px,40px);}}
+@keyframes driftB{0%{transform:translate(0,0);}100%{transform:translate(-50px,-30px);}}
+.hero .wrap{position:relative; z-index:1;}
+.hero .eyebrow{color:#9fa3ad;}
+.hero h1{color:#fff;}
+.hero p.lead{color:#c7cad3;}
+.hero .hero-note{color:#9fa3ad;}
+.hero-visual{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);}
+.hero-visual-label{color:#9fa3ad;}
+.hero-visual-note{color:#9fa3ad;}
+.lnode span{color:#c7cad3;}
+.lnode .dot{background:#1b1d24; border:3px solid rgba(255,255,255,.28);}
+.ladder-track{background:rgba(255,255,255,.18);}
+@keyframes activate{
+  0%{border-color:rgba(255,255,255,.28); background:#1b1d24; box-shadow:none; transform:scale(1);}
+  5%{transform:scale(1.18); border-color:var(--green); background:var(--green); box-shadow:0 0 16px rgba(46,212,122,.7);}
+  15%{transform:scale(1); border-color:var(--green); background:var(--green); box-shadow:0 0 6px rgba(46,212,122,.4);}
+  27%{border-color:rgba(255,255,255,.28); background:#1b1d24; box-shadow:none;}
+  100%{border-color:rgba(255,255,255,.28); background:#1b1d24;}
+}
+EOF
+Output
+
+/* ---- Hero: animated gradient background ---- */
+.hero{position:relative; overflow:hidden; background:var(--navy); padding:96px 0 64px;}
+.hero::before, .hero::after{content:""; position:absolute; width:520px; height:520px; border-radius:50%; filter:blur(60px); pointer-events:none; z-index:0;}
+.hero::before{background:radial-gradient(circle, rgba(46,212,122,.35), transparent 70%); top:-200px; left:-140px; animation:driftA 16s ease-in-out infinite alternate;}
+.hero::after{background:radial-gradient(circle, rgba(46,212,122,.2), transparent 70%); bottom:-220px; right:-160px; animation:driftB 20s ease-in-out infinite alternate;}
+@keyframes driftA{0%{transform:translate(0,0);}100%{transform:translate(60px,40px);}}
+@keyframes driftB{0%{transform:translate(0,0);}100%{transform:translate(-50px,-30px);}}
+.hero .wrap{position:relative; z-index:1;}
+.hero .eyebrow{color:#9fa3ad;}
+.hero h1{color:#fff;}
+.hero p.lead{color:#c7cad3;}
+.hero .hero-note{color:#9fa3ad;}
+.hero-visual{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);}
+.hero-visual-label{color:#9fa3ad;}
+.hero-visual-note{color:#9fa3ad;}
+.lnode span{color:#c7cad3;}
+.lnode .dot{background:#1b1d24; border:3px solid rgba(255,255,255,.28);}
+.ladder-track{background:rgba(255,255,255,.18);}
+@keyframes activate{
+  0%{border-color:rgba(255,255,255,.28); background:#1b1d24; box-shadow:none; transform:scale(1);}
+  5%{transform:scale(1.18); border-color:var(--green); background:var(--green); box-shadow:0 0 16px rgba(46,212,122,.7);}
+  15%{transform:scale(1); border-color:var(--green); background:var(--green); box-shadow:0 0 6px rgba(46,212,122,.4);}
+  27%{border-color:rgba(255,255,255,.28); background:#1b1d24; box-shadow:none;}
+  100%{border-color:rgba(255,255,255,.28); background:#1b1d24;}
+}
