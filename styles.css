@@ -151,6 +151,8 @@ footer{background:var(--navy); color:#c7cad3; padding:56px 0 28px; font-size:14.
 .lnode.n2 .dot{animation:activate 4s infinite; animation-delay:1s;}
 .lnode.n3 .dot{animation:activate 4s infinite; animation-delay:2s;}
 .lnode.n4 .dot{animation:activate 4s infinite; animation-delay:3s;}
+bash
+
 cat << 'EOF'
 /* ---- Hero: animated gradient background ---- */
 .hero{position:relative; overflow:hidden; background:var(--navy); padding:96px 0 64px;}
